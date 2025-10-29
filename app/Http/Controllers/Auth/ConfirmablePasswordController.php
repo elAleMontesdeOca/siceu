@@ -32,7 +32,7 @@ class ConfirmablePasswordController extends Controller
         ]);
 
         if (
-            !Auth::guard('web')->validate([
+            ! Auth::guard('web')->validate([
                 'email' => $user->email,
                 'password' => $request->input('password'),
             ])
@@ -46,5 +46,4 @@ class ConfirmablePasswordController extends Controller
 
         return redirect()->intended(route('dashboard', absolute: false));
     }
-
 }
