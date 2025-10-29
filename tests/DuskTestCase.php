@@ -11,14 +11,14 @@ abstract class DuskTestCase extends BaseTestCase
 {
     public static function prepare(): void
     {
-        if (!static::runningInSail()) {
+        if (! static::runningInSail()) {
             static::startChromeDriver(['--port=50875']);
         }
     }
 
     protected function driver(): RemoteWebDriver
     {
-        $options = new ChromeOptions();
+        $options = new ChromeOptions;
         $options->addArguments([
             '--disable-gpu',
             '--headless=new',
