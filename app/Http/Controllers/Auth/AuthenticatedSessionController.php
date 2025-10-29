@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\View\View;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -37,11 +37,11 @@ class AuthenticatedSessionController extends Controller
             /** @var User $user */
             $user = Auth::user();
 
-            if ($user->role_id == 1) {
+            if ($user->role_id === 1) {
                 return redirect()->intended('/dashboard');
-            } else {
-                return redirect()->intended('/home');
             }
+
+            return redirect()->intended('/home');
         }
 
         return back()->withErrors([
@@ -54,9 +54,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        /** @var \Illuminate\Contracts\Auth\StatefulGuard $guard */
-        $guard = Auth::guard('web');
-        $guard->logout();
+        Auth::guard('web')->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
