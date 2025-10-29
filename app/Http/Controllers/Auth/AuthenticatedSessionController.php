@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -21,7 +22,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'email' => ['required', 'string', 'email'],
@@ -33,6 +34,7 @@ class AuthenticatedSessionController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
+            /** @var User $user */
             $user = Auth::user();
 
             // Redirigir según el rol
@@ -53,10 +55,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        /** @var \Illuminate\Contracts\Auth\StatefulGuard $guard */
+        $guard = Auth::guard('web');
+        $guard->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');
