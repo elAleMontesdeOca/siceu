@@ -1,0 +1,26 @@
+# phpstan.neon
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+    level: 5
+    paths:
+        - app
+        - database
+
+    # Ignorar errores típicos de Laravel (métodos mágicos, propiedades dinámicas)
+    ignoreErrors:
+        # Métodos de Auth
+        - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Guard::logout#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Authenticatable::notificaciones#'
+
+        # Propiedades dinámicas de Request
+        - '#Access to an undefined property Illuminate\\Http\\Request::\$[a-zA-Z_]+#'
+
+        # Métodos y propiedades de Eloquent
+        - '#Call to an undefined static method App\\Models\\[a-zA-Z]+::(where|create|count|orderBy|whereDate)\(#'
+        - '#Access to an undefined property App\\Models\\[a-zA-Z]+::\$[a-zA-Z_]+#'
+
+        # Otros falsos positivos comunes
+        - '#Method .* should return Illuminate\\\\View\\\\View but returns Illuminate\\\\Contracts\\\\View\\\\View#'
+        - '#Call to an undefined method Illuminate\\\\Database\\\\Schema\\\\ForeignKeyDefinition::after#'

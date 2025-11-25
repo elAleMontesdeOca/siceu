@@ -45,4 +45,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function notificaciones()
+    {
+        return $this->belongsToMany(\App\Models\Notificacion::class, 'user_notificaciones', 'user_id', 'notificacion_id')
+            ->withPivot('leido_at')
+            ->withTimestamps();
+    }
 }
